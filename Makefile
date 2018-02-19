@@ -43,6 +43,15 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
 	@echo "Compiled test object "$<""
 
+
+# Targets for example programs 
+hello: $(OBJECTS)
+	$(CXX) $(LDFLAGS) \
+		$(OBJ_DIR)/hello.o \
+		$(INCS) \
+		-o $(TEST_BIN)/hello $(TEST_LIBS) $(LIBS)
+
+
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
 	# Remove test binaries 
