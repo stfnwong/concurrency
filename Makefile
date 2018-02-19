@@ -57,6 +57,17 @@ basic_thread: $(OBJECTS)
 	$(INCS) \
 	-o $(TEST_BIN)/basic_thread $(TEST_LIBS) $(LIBS)
 
+
+list_mutex: $(OBJECTS)
+	$(CXX) $(LDFLAGS) \
+	$(OBJ_DIR)/list_mutex.o \
+	$(INCS) \
+	-o $(TEST_BIN)/list_mutex $(TEST_LIBS) $(LIBS)
+
+
+
+
+
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
 	# Remove test binaries 
