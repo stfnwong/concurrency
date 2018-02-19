@@ -51,12 +51,17 @@ hello: $(OBJECTS)
 		$(INCS) \
 		-o $(TEST_BIN)/hello $(TEST_LIBS) $(LIBS)
 
+basic_thread: $(OBJECTS)
+	$(CXX) $(LDFLAGS) \
+	$(OBJ_DIR)/basic_thread.o \
+	$(INCS) \
+	-o $(TEST_BIN)/basic_thread $(TEST_LIBS) $(LIBS)
 
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
 	# Remove test binaries 
 	#ifneq ("$(wildcard $(TEST_BIN)/test_*)", "")
-	rm -vf $(TEST_BIN)/test_*
+	rm -vf $(TEST_BIN)/*
 
 print-%:
 	@echo $* = $($*)
