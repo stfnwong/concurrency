@@ -64,6 +64,11 @@ list_mutex: $(OBJECTS)
 	$(INCS) \
 	-o $(TEST_BIN)/list_mutex $(TEST_LIBS) $(LIBS)
 
+thread_stack: $(OBJECTS)
+	$(CXX) $(LDFLAGS) \
+	$(OBJ_DIR)/thread_stack.o \
+	$(INCS) \
+	-o $(TEST_BIN)/thread_stack $(TEST_LIBS) $(LIBS)
 
 
 
