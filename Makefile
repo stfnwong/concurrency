@@ -70,6 +70,11 @@ thread_stack: $(OBJECTS)
 	$(INCS) \
 	-o $(TEST_BIN)/thread_stack $(TEST_LIBS) $(LIBS)
 
+thread_queue: $(OBJECTS)
+	$(CXX) $(LDFLAGS) \
+	$(OBJ_DIR)/thread_queue.o \
+	$(INCS) \
+	-o $(TEST_BIN)/thread_queue $(TEST_LIBS) $(LIBS)
 
 
 
