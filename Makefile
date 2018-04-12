@@ -76,6 +76,7 @@ thread_queue: $(OBJECTS)
 	$(INCS) \
 	-o $(TEST_BIN)/thread_queue $(TEST_LIBS) $(LIBS)
 
+thread_sort: $(OBJECTS)
 
 
 clean:
