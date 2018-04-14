@@ -29,6 +29,7 @@ CFLAGS += $(DEBUG_OPTS)
 .PHONY: clean
 
 # Sources 
+INCLUDES      := -I$(SRC_DIR)
 SOURCES       := $(wildcard $(SRC_DIR)/*.cpp)
 TEST_SOURCES  := $(wildcard $(TEST_DIR)/*.cpp)
 OBJECTS       := $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
@@ -39,8 +40,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 # Unit test objects
-$(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp 
-	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
+$(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(DEPS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 	@echo "Compiled test object "$<""
 
 
@@ -48,35 +49,35 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp
 hello: $(OBJECTS)
 	$(CXX) $(LDFLAGS) \
 		$(OBJ_DIR)/hello.o \
-		$(INCS) \
+		$(INCLUDES) \
 		-o $(TEST_BIN)/hello $(TEST_LIBS) $(LIBS)
 
 basic_thread: $(OBJECTS)
 	$(CXX) $(LDFLAGS) \
 	$(OBJ_DIR)/basic_thread.o \
-	$(INCS) \
+	$(INCLUDES) \
 	-o $(TEST_BIN)/basic_thread $(TEST_LIBS) $(LIBS)
 
 
 list_mutex: $(OBJECTS)
 	$(CXX) $(LDFLAGS) \
 	$(OBJ_DIR)/list_mutex.o \
-	$(INCS) \
+	$(INCLUDES) \
 	-o $(TEST_BIN)/list_mutex $(TEST_LIBS) $(LIBS)
 
 thread_stack: $(OBJECTS)
 	$(CXX) $(LDFLAGS) \
 	$(OBJ_DIR)/thread_stack.o \
-	$(INCS) \
+	$(INCLUDES) \
 	-o $(TEST_BIN)/thread_stack $(TEST_LIBS) $(LIBS)
 
 thread_queue: $(OBJECTS)
 	$(CXX) $(LDFLAGS) \
 	$(OBJ_DIR)/thread_queue.o \
-	$(INCS) \
+	$(INCLUDES) \
 	-o $(TEST_BIN)/thread_queue $(TEST_LIBS) $(LIBS)
 
-thread_sort: $(OBJECTS)
+thread_sort: $(OBJECTS) $(TEST_OBJECTS)
 
 
 clean:

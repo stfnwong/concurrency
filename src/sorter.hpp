@@ -4,6 +4,8 @@
  * Stefan Wong 2018.
  */
 
+#ifndef __SORTER_HPP
+#define __SORTER_HPP
 
 #include <vector>
 #include <list>
@@ -18,6 +20,7 @@
 template <typename T>
 class Sorter
 {
+    /*
     // a chunk of data to sort
     struct Chunk
     {
@@ -50,6 +53,11 @@ class Sorter
                 this->sort_chunk(chunk);
         }
 
+        void sort_chunk(const std::shared_ptr<Chunk>& chunk)
+        {
+            chunk->promise.set_value(this->do_sort(chunk->data));
+        }
+
         std::list<T> do_sort(std::list<T> & chunk_data)
         {
             if(chunk_data.empty())
@@ -61,7 +69,7 @@ class Sorter
             const T& partition_val = *result.begin();
 
             // start creating the positions where the work load will be divided 
-            typename std::list<T> iter_divide_point = 
+            typename std::list<T>::iterator divide_point = 
                 std::partition(chunk_data.begin(), chunk_data.end(), 
                         [&](const T& val){ return val < partition_val;});
 
@@ -70,7 +78,7 @@ class Sorter
             new_lower_chunk.data.splice(new_lower_chunk.data.end(),
                     chunk_data,
                     chunk_data.begin(),
-                    iter_divide_point);
+                    divide_point);
 
             std::future<std::list<T>> new_lower = new_lower_chunk.promise.get_future();
             this->chunks.push(std::move(new_lower_chunk));
@@ -89,11 +97,6 @@ class Sorter
             return result;
         }
 
-        void sort_chunk(const std::shared_ptr<Chunk>& chunk)
-        {
-            chunk->promise.set_value(this->do_sort(chunk->data));
-        }
-
         void sort_thread(void)
         {
             while(!this->data_end)
@@ -102,17 +105,9 @@ class Sorter
                 std::this_thread::yield();
             }
         }
+        */
 
 };
 
 
-template <typename T> std::list<T> parallel_quick_sort(std::list<T> input)
-{
-    if(input.empty())
-        return input;
-
-    Sorter<T> s;
-    return s.do_sort(input);
-}
-
-
+#endif /*__SORTER_HPP*/
