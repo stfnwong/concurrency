@@ -57,6 +57,37 @@ TEST_F(TestSorting, test_sequential_quicksort)
         std::cout << *it << std::endl;
         n++;
     }
+
+    std::list<int> ref_list;
+    ref_list.push_back(3);
+    ref_list.push_back(8);
+    ref_list.push_back(9);
+    ref_list.push_back(29);
+    ref_list.push_back(33);
+    ref_list.push_back(34);
+    ref_list.push_back(42);
+    ref_list.push_back(54);
+    ref_list.push_back(98);
+    ref_list.push_back(108);
+    ref_list.push_back(132);
+    ref_list.push_back(326);
+    ref_list.push_back(423);
+    ref_list.push_back(1654);
+    ref_list.push_back(4352);
+    ref_list.push_back(32843);
+    ref_list.push_back(453543);
+
+    // Check that the list actually was sorted
+    ASSERT_EQ(ref_list.size(), out_list.size());
+    // use a gaggle of iterators here
+    std::list<int>::iterator ref_it = ref_list.begin();
+    std::list<int>::iterator test_it = out_list.begin();
+
+
+    for( ; ref_it != ref_list.end() && test_it != out_list.end(); ++ref_it, ++test_it)
+    {
+        ASSERT_EQ(*ref_it, *test_it);
+    }
 }
 
 
