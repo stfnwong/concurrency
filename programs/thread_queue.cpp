@@ -16,15 +16,11 @@
 // create threads to access the queue
 #include <thread>
 // I hate iostream
-#include <cstdio>
+#include <iostream>
 
-// Thread queue is now in seperate header 
 #include "thread_queue.hpp"
 
 #define GLOBAL_MAX 640000
-
-
-
 
 
 ThreadQueue <int> data_q;
@@ -49,7 +45,7 @@ bool is_last_chunk(const int data)
 
 void process(int data)
 {
-    fprintf(stdout, "data : %d\n", data);
+    std::cout << "[" << __func__ << "] data : " << data << std::endl;
 }
 
 void data_preparation_thread(void)
@@ -66,7 +62,7 @@ void data_processing_thread(void)
     int data_proc_count = 0;
     while(1)
     {
-        fprintf(stdout, "Preparing data %d\n", data_proc_count);
+        std::cout << "[" << __func__ << "] preparing data " << data_proc_count << std::endl;
         int data;
         data_q.wait_and_pop(data);
         process(data);
@@ -78,7 +74,6 @@ void data_processing_thread(void)
 }
 
 
-
 int main(int argc, char *argv[])
 {
     std::thread data_prep_thread(data_preparation_thread);
@@ -87,7 +82,7 @@ int main(int argc, char *argv[])
     data_prep_thread.join();
     data_proc_thread.join();
 
-    fprintf(stdout, "All work done\n");
+    std::cout << "[" << __func__ << "] all work done." << std::endl;
 
     return 0;
 }

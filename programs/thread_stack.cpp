@@ -15,8 +15,6 @@
 #include "thread_stack.hpp"
 
 
-
-
 int main(int argc, char *argv[])
 {
     // This is just a very basic instantiation that doesn't really test
