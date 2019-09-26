@@ -16,86 +16,11 @@
 // create threads to access the queue
 #include <thread>
 // I hate iostream
-#include <cstdio>
+#include <iostream>
+
+#include "thread_queue.hpp"
 
 #define GLOBAL_MAX 640000
-
-template <typename T> class ThreadQueue
-{
-    private:
-        mutable std::mutex q_mutex;
-        std::queue <T> data_q;
-        std::condition_variable data_cond;
-
-    public:
-        ThreadQueue() {}
-        // copy ctor 
-        ThreadQueue(const ThreadQueue& other)
-        {
-            std::lock_guard <std::mutex> lock(other.q_mutex);
-            this->data_q = other.data_q;
-        }
-        ~ThreadQueue() {}
-        // disallow assignment 
-        ThreadQueue& operator=(const ThreadQueue&) = delete;
-
-        void push(T data)
-        {
-            std::lock_guard <std::mutex> lock(this->q_mutex);
-            this->data_q.push(data);
-            this->data_cond.notify_one();
-        }
-
-        bool try_pop(T &data)
-        {
-            std::lock_guard <std::mutex> lock(this->q_mutex);
-            if(this->data_q.empty())
-                return false;
-            data = this->data_q.front();
-            this->data_q.pop();
-
-            return true;
-        }
-
-        std::shared_ptr<T> try_pop(void)
-        {
-            std::lock_guard <std::mutex> lock(this->q_mutex);
-            if(this->data_q.empty())
-                return std::shared_ptr <T>();
-
-            std::shared_ptr <T> res(std::make_shared<T> (this->data_q.front()));
-            this->data_q.pop();
-
-            return res;
-        }
-
-        // wait and pop will wait until there is data then pop
-        void wait_and_pop(T &data)
-        {
-            std::unique_lock <std::mutex> lock(this->q_mutex);
-            // TODO : Not familiar with the syntax here....?
-            this->data_cond.wait(lock, [this]{return !this->data_q.empty();});      
-            data = this->data_q.front();
-            this->data_q.pop();
-        }
-
-        std::shared_ptr <T> wait_and_pop(void)
-        {
-            std::unique_lock <std::mutex> lock(this->q_mutex);
-            this->data_cond.wait(lock, [this]{return !this->data_q.empty();});
-            std::shared_ptr <T> res(std::make_shared <T> (this->data_q.front()));
-            this->data_q.pop();
-
-            return res;
-        }
-
-        bool empty(void) const
-        {
-            std::lock_guard <std::mutex> lock(this->q_mutex);
-            return this->data_q.empty();
-        }
-};
-
 
 
 ThreadQueue <int> data_q;
@@ -120,7 +45,7 @@ bool is_last_chunk(const int data)
 
 void process(int data)
 {
-    fprintf(stdout, "data : %d\n", data);
+    std::cout << "[" << __func__ << "] data : " << data << std::endl;
 }
 
 void data_preparation_thread(void)
@@ -137,7 +62,7 @@ void data_processing_thread(void)
     int data_proc_count = 0;
     while(1)
     {
-        fprintf(stdout, "Preparing data %d\n", data_proc_count);
+        std::cout << "[" << __func__ << "] preparing data " << data_proc_count << std::endl;
         int data;
         data_q.wait_and_pop(data);
         process(data);
@@ -158,7 +83,7 @@ int main(int argc, char *argv[])
     data_prep_thread.join();
     data_proc_thread.join();
 
-    fprintf(stdout, "All work done\n");
+    std::cout << "[" << __func__ << "] all work done." << std::endl;
 
     return 0;
 }

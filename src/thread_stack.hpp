@@ -1,14 +1,13 @@
-/* Thread safe stack
+/*
+ * THREAD_STACK
+ * A thread-safe stack 
  *
- * From listing 3.4. This is the same as the *.cpp file, just 
- * turned into a header because I prefer to include headers 
+ * Stefan Wong 2019
  */
 
 #ifndef __THREAD_STACK_HPP
 #define __THREAD_STACK_HPP
 
-#include <exception>
-#include <memory>
 #include <mutex>
 #include <stack>
 
@@ -81,5 +80,7 @@ template <typename T> class ThreadStack
             return this->data.empty();
         }
 };
+
+
 
 #endif /*__THREAD_STACK_HPP*/
