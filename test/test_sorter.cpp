@@ -5,9 +5,10 @@
  */
 
 #include <cstdint>
-#include <cstdio>
 #include <cstdlib>
+#include <iostream>
 #include <gtest/gtest.h>
+
 // Unit under test 
 #include "sorter.hpp"
 
@@ -27,7 +28,7 @@ class TestSorter : public ::testing::Test
 TEST_F(TestSorter, test_init)
 {
     // Get a new sorter object 
-    Sorter<float> sort_test;
+    //Sorter<float> sort_test;          // shut compiler up - will use this in next commit
     unsigned int num_elements = 16;
     std::list<float> input_to_sort;
 
@@ -40,9 +41,11 @@ TEST_F(TestSorter, test_init)
     // TODO: put this back when promise bug is sorted
     //std::list<float> sorted_output = sort_test.do_sort(input_to_sort);
 
-    fprintf(stdout, "Items (pre-sort):\n");
+    std::cout << "Items (pre-sort) " << std::endl;
     for(int n : input_to_sort)
-        fprintf(stdout, " %f ", n);
+        std::cout << " " << n;
+    std::cout << std::endl;
+
     //for(unsigned int n = 0; n < input_to_sort.size(); n++)
     //    fprintf(stdout, " %f ", input_to_sort[n]);
 
