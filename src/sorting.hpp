@@ -1,6 +1,6 @@
 /*
  * SORTING
- * Various sort algorithms
+ * Various sort algorithms. These are taken from Chapter 4.4.2.
  * 
  * Stefan Wong 2019
  */
@@ -94,6 +94,8 @@ template <typename T> std::list<T> parallel_quicksort(std::list<T> input)
 
     // NOTE: I think I actually want to see how this actually works... that is I want to see
     // what assembly structure one gets from a std::partition
+    // Also note that most of the work is being done here. Run valgrind on this to find out how
+    // much 'most' is in this context.
     auto divide_point = std::partition(
             input.begin(),
             input.end(),

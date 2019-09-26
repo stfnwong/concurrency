@@ -11,6 +11,11 @@
 // Unit under test 
 #include "sorting.hpp"
 
+
+// undefine this for profiling (as it removes character stream stuff)
+//#define PRINT_OUTPUT
+
+
 // Test harness class 
 class TestSorting : public ::testing::Test
 {
@@ -81,6 +86,7 @@ TEST_F(TestSorting, test_sequential_quicksort)
     // Now try to sort the list 
     std::list<int> out_list = sequential_quicksort(input_list);
 
+#ifdef PRINT_OUTPUT
     int n = 0;
     std::cout << " idx   val " << std::endl;
     for(auto it = out_list.begin(); it != out_list.end(); it++)
@@ -89,6 +95,7 @@ TEST_F(TestSorting, test_sequential_quicksort)
         std::cout << *it << std::endl;
         n++;
     }
+#endif /*PRINT_OUTPUT*/
 
     // get a reference list to compare against
     std::list<int> ref_list = create_ref_list();
@@ -113,6 +120,7 @@ TEST_F(TestSorting, test_parallel_quicksort)
     // Now try to sort the list 
     std::list<int> out_list = parallel_quicksort(input_list);
 
+#ifdef PRINT_OUTPUT
     int n = 0;
     std::cout << " idx   val " << std::endl;
     for(auto it = out_list.begin(); it != out_list.end(); it++)
@@ -121,6 +129,7 @@ TEST_F(TestSorting, test_parallel_quicksort)
         std::cout << *it << std::endl;
         n++;
     }
+#endif /*PRINT_OUTPUT*/
 
     // get a reference list to compare against
     std::list<int> ref_list = create_ref_list();
@@ -137,8 +146,6 @@ TEST_F(TestSorting, test_parallel_quicksort)
         ASSERT_EQ(*ref_it, *test_it);
     }
 }
-
-
 
 
 int main(int argc, char *argv[])
