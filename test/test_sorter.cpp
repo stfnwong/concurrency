@@ -56,7 +56,6 @@ TEST_F(TestSorter, test_init)
 
 
 
-
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
