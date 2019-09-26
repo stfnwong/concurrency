@@ -30,6 +30,10 @@ template <typename T> class ThreadStack
         std::stack <T> data;
         mutable std::mutex mutex;
 
+    private:
+        // delete assignment operator so the stack can't be assigned
+        ThreadStack &operator=(const ThreadStack&) = delete;    
+
     public:
         ThreadStack() {}
         ThreadStack(const ThreadStack &other)
@@ -37,8 +41,6 @@ template <typename T> class ThreadStack
             std::lock_guard <std::mutex> lock(other.mutex);
             this->data = other.data;
         }
-        // delete assignment operator so the stack can't be assigned
-        ThreadStack &operator=(const ThreadStack&) = delete;    
 
         // Push element 
         void push(T value)
