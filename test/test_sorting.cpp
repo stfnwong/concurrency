@@ -23,7 +23,7 @@ class TestSorting : public ::testing::Test
 };
 
 
-TEST_F(TestSorting, test_sequential_quicksort)
+std::list<int> create_test_list(void)
 {
     std::list<int> input_list;
 
@@ -46,18 +46,11 @@ TEST_F(TestSorting, test_sequential_quicksort)
     input_list.push_back(33);
     input_list.push_back(132);
 
-    // Now try to sort the list 
-    std::list<int> out_list = sequential_quicksort(input_list);
+    return input_list;
+}
 
-    int n = 0;
-    std::cout << " idx   val " << std::endl;
-    for(auto it = out_list.begin(); it != out_list.end(); it++)
-    {
-        std::cout << "[" << std::setw(4) << std::setfill(' ') << n << "] ";
-        std::cout << *it << std::endl;
-        n++;
-    }
-
+std::list<int> create_ref_list(void)
+{
     std::list<int> ref_list;
     ref_list.push_back(3);
     ref_list.push_back(8);
@@ -77,6 +70,29 @@ TEST_F(TestSorting, test_sequential_quicksort)
     ref_list.push_back(32843);
     ref_list.push_back(453543);
 
+    return ref_list;
+}
+
+
+TEST_F(TestSorting, test_sequential_quicksort)
+{
+    std::list<int> input_list = create_test_list();
+
+    // Now try to sort the list 
+    std::list<int> out_list = sequential_quicksort(input_list);
+
+    int n = 0;
+    std::cout << " idx   val " << std::endl;
+    for(auto it = out_list.begin(); it != out_list.end(); it++)
+    {
+        std::cout << "[" << std::setw(4) << std::setfill(' ') << n << "] ";
+        std::cout << *it << std::endl;
+        n++;
+    }
+
+    // get a reference list to compare against
+    std::list<int> ref_list = create_ref_list();
+    
     // Check that the list actually was sorted
     ASSERT_EQ(ref_list.size(), out_list.size());
     // use a gaggle of iterators here
@@ -89,6 +105,39 @@ TEST_F(TestSorting, test_sequential_quicksort)
         ASSERT_EQ(*ref_it, *test_it);
     }
 }
+
+TEST_F(TestSorting, test_parallel_quicksort)
+{
+    std::list<int> input_list = create_test_list();
+
+    // Now try to sort the list 
+    std::list<int> out_list = parallel_quicksort(input_list);
+
+    int n = 0;
+    std::cout << " idx   val " << std::endl;
+    for(auto it = out_list.begin(); it != out_list.end(); it++)
+    {
+        std::cout << "[" << std::setw(4) << std::setfill(' ') << n << "] ";
+        std::cout << *it << std::endl;
+        n++;
+    }
+
+    // get a reference list to compare against
+    std::list<int> ref_list = create_ref_list();
+
+    // Check that the list actually was sorted
+    ASSERT_EQ(ref_list.size(), out_list.size());
+    // use a gaggle of iterators here
+    std::list<int>::iterator ref_it = ref_list.begin();
+    std::list<int>::iterator test_it = out_list.begin();
+
+
+    for( ; ref_it != ref_list.end() && test_it != out_list.end(); ++ref_it, ++test_it)
+    {
+        ASSERT_EQ(*ref_it, *test_it);
+    }
+}
+
 
 
 
